@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 const App = () => {
@@ -11,27 +11,38 @@ const App = () => {
   ]);
   const [input, setInput] = useState("");
   const [classInput, setClassInput] = useState(["form-control"]);
+  const [classAlert, setClassAlert] = useState(["toast","d-none"]);
 
+
+  useEffect(()=>{
+    console.log(classAlert);
+  }, [todos]);
 
   const handleDelete = (todo) => {
     let todos2 = todos.filter(t => todo.id !== t.id);
     setTodos(todos2);
   }
-  
   const handleChange = (e) => {
     setInput(e.target.value);
   }
-
   const addClassInput = (newClass) => {
-
     const listClass = classInput.filter(c => c !== newClass);
     setClassInput([...listClass,newClass]);
-
   }
   const removeClassInput = (removeClass) => {
     setClassInput(classInput.filter(c => c !== removeClass ));
   }
-
+  const addClassAlert = (newClass) => {
+    const listClass = classAlert.filter(ca => ca !== newClass);
+    setTimeout(() => {
+      setClassAlert([...listClass,newClass]);
+    }, 5000);
+  }
+  const removeClassAlert = (removeClass) => {
+    setTimeout(() => {
+      setClassAlert(classAlert.filter(ca => ca !== removeClass ));
+  }, 5000);
+  }
   const addTodo = (input) => {
     
     if(input === ''){
@@ -47,10 +58,28 @@ const App = () => {
 
     setTodos([...todos, newItem]);
 
+    addClassAlert("show");
+    removeClassAlert("d-none");
+
   }
 
   return ( <div className="container pt-5">
       <h1>React js</h1>
+
+        <div className={classAlert.map(c => c).join(' ')} role="alert" aria-live="assertive" aria-atomic="true" style={{position: "absolute", bottom: 0, right: 0}} >
+          <div className="toast-header">
+            <strong className="mr-auto">Succes</strong>
+            <small>11 mins ago</small>
+            <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="toast-body">
+            Hello, world! This is a toast message.
+          </div>
+        </div>
+
+
       <div className="col-md-12 my-4 form-group row px-0">
         <div className="col-md-6">
           <input type="text" name="input" placeholder='Tapez votre texte' className={classInput.map(c => c).join(' ')} onChange={(e) => handleChange(e)} />

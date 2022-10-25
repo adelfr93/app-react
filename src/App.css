@@ -5,3 +5,9 @@
   border: solid 1px red;
   background: #ff00001a;
 }
+.toast.show {
+  opacity: 1;
+}
+.toast {
+  background-color: rgb(0 233 88 / 85%);
+}
